@@ -1,0 +1,17 @@
+{
+	"autoload" : {
+		"psr-4" : {
+			"unrealization\\PHPClassCollection\\" : "src"
+		},
+		"psr-0" : {
+			"unrealization\\PHPClassCollection\\" : "src"
+		}
+	},
+	"name" : "unrealization/php-email",
+	"type" : "library",
+	"license" : "LGPL-2.1",
+	"require" : {
+		"php" : ">=7.0",
+		"ext-imap" : "*"
+	}
+}
