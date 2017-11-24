@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 2.0.1
+ * @version 2.0.2
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -56,12 +56,12 @@ class EMail
 	 * The reply-to address.
 	 * @var string
 	 */
-	private $replyTo;
+	private $replyTo = null;
 	/**
 	 * The notification-address.
 	 * @var string
 	 */
-	private $notificationTo;
+	private $notificationTo = null;
 	/**
 	 * The sending user-agent.
 	 * @var string
@@ -93,33 +93,39 @@ class EMail
 	 */
 	public function __construct(string $from, string $subject, string $replyTo = '', string $notificationTo = '', string $userAgent = 'PHP/unrealization/eMail')
 	{
-		if (preg_match('@<.*>@', $from) > 0)
+		try
 		{
-			$this->from = $from;
+			$this->from = $this->validateAddress($from);
 		}
-		else
+		catch (\Exception $e)
 		{
-			$this->from = '<'.$from.'>';
+			throw $e;
 		}
 
 		$this->subject = $subject;
 
-		if ((preg_match('@<.*>@', $replyTo) > 0) || (empty($replyTo)))
+		if (!empty($replyTo))
 		{
-			$this->replyTo = $replyTo;
-		}
-		else
-		{
-			$this->replyTo = '<'.$replyTo.'>';
+			try
+			{
+				$this->replyTo = $this->validateAddress($replyTo);
+			}
+			catch (\Exception $e)
+			{
+				throw $e;
+			}
 		}
 
-		if ((preg_match('@<.*>@', $notificationTo) > 0) || (empty($notificationTo)))
+		if (!empty($notificationTo))
 		{
-			$this->notificationTo = $notificationTo;
-		}
-		else
-		{
-			$this->notificationTo = '<'.$notificationTo.'>';
+			try
+			{
+				$this->notificationTo = $this->validateAddress($notificationTo);
+			}
+			catch (\Exception $e)
+			{
+				throw $e;
+			}
 		}
 
 		$this->userAgent = $userAgent;
@@ -170,13 +176,18 @@ class EMail
 	 * Add a recipient.
 	 * @param string $recipient
 	 * @param string $type
+	 * @throws \Exception
 	 * @throws \InvalidArgumentException
 	 */
 	public function addRecipient(string $recipient, string $type = 'To')
 	{
-		if (preg_match('@<.*>@', $recipient) == 0)
+		try
 		{
-			$recipient = '<'.$recipient.'>';
+			$recipient = $this->validateAddress($recipient);
+		}
+		catch (\Exception $e)
+		{
+			throw $e;
 		}
 
 		switch (strtoupper($type))
@@ -212,10 +223,11 @@ class EMail
 		}
 
 		$this->attachedFiles[] = array(
-				'fileName'		=> $fileName,
-				'disposition'	=> $disposition,
-				'contentId'		=> md5(uniqid())
-				);
+			'fileName'		=> $fileName,
+			'disposition'	=> $disposition,
+			'contentId'		=> md5(uniqid()),
+			'data'			=> null
+		);
 	}
 
 	/**
@@ -236,11 +248,11 @@ class EMail
 		}
 
 		$this->attachedFiles[] = array(
-				'fileName'		=> $fileName,
-				'disposition'	=> $disposition,
-				'contentId'		=> md5(uniqid()),
-				'data'			=> $data
-				);
+			'fileName'		=> $fileName,
+			'disposition'	=> $disposition,
+			'contentId'		=> md5(uniqid()),
+			'data'			=> $data
+		);
 	}
 
 	/**
@@ -314,6 +326,36 @@ class EMail
 	}
 
 	/**
+	 * Validate an email address.
+	 * @param string $address
+	 * @throws \Exception
+	 * @return string
+	 */
+	private function validateAddress(string $address): string
+	{
+		$matches = array();
+
+		if (preg_match('@(?|<)?([^<>]+)(?|>)?$@', $address, $matches) == 0)
+		{
+			throw new \Exception('Invalid email address');
+		}
+
+		$testAddress = filter_var($matches[1], FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE);
+
+		if (is_null($testAddress))
+		{
+			throw new \Exception('Invalid email address');
+		}
+
+		if (preg_match('@<.*>@', $address) == 0)
+		{
+			$address = '<'.$address.'>';
+		}
+
+		return $address;
+	}
+
+	/**
 	 * Compose the mail.
 	 * @return string
 	 * @throws \Exception
@@ -322,12 +364,12 @@ class EMail
 	{
 		$mail = 'From: '.$this->from."\r\n";
 
-		if (!empty($this->replyTo))
+		if (!is_null($this->replyTo))
 		{
 			$mail .= 'Reply-To: '.$this->replyTo."\r\n";
 		}
 
-		if (!empty($this->notificationTo))
+		if (!is_null($this->notificationTo))
 		{
 			$mail .= 'Disposition-Notification-To: '.$this->notificationTo."\r\n";
 		}
@@ -406,7 +448,7 @@ class EMail
 				$fileName = explode('/', $this->attachedFiles[$x]['fileName']);
 				$fileName = $fileName[count($fileName) - 1];
 
-				if (!isset($this->attachedFiles[$x]['data']))
+				if (is_null($this->attachedFiles[$x]['data']))
 				{
 					$file = @fopen($this->attachedFiles[$x]['fileName'],'r');
 
