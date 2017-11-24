@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 2.0.2
+ * @version 2.0.3
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -141,13 +141,9 @@ class EMail
 		switch (strtoupper($encoding))
 		{
 			case '8BIT':
-				$this->encoding = '8bit';
-				break;
 			case 'QUOTED-PRINTABLE':
-				$this->encoding = 'quoted-printable';
-				break;
 			case 'BASE64':
-				$this->encoding = 'base64';
+				$this->encoding = strtolower($encoding);
 				break;
 			default:
 				throw new \InvalidArgumentException('Unknown encoding');
