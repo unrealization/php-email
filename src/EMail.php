@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 2.0.3
+ * @version 2.1.0
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -135,8 +135,9 @@ class EMail
 	 * Set the encoding of the email.
 	 * @param string $encoding
 	 * @throws \InvalidArgumentException
+	 * @return EMail
 	 */
-	public function setEncoding(string $encoding)
+	public function setEncoding(string $encoding): EMail
 	{
 		switch (strtoupper($encoding))
 		{
@@ -148,24 +149,30 @@ class EMail
 			default:
 				throw new \InvalidArgumentException('Unknown encoding');
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Set the clear-text body.
 	 * @param string $body
+	 * @return EMail
 	 */
-	public function setTextBody(string $body)
+	public function setTextBody(string $body): EMail
 	{
 		$this->textBody = $body;
+		return $this;
 	}
 
 	/**
 	 * Set the HTML body.
 	 * @param string $body
+	 * @return EMail
 	 */
-	public function setHtmlBody(string $body)
+	public function setHtmlBody(string $body): EMail
 	{
 		$this->htmlBody = $body;
+		return $this;
 	}
 
 	/**
@@ -174,8 +181,9 @@ class EMail
 	 * @param string $type
 	 * @throws \Exception
 	 * @throws \InvalidArgumentException
+	 * @return EMail
 	 */
-	public function addRecipient(string $recipient, string $type = 'To')
+	public function addRecipient(string $recipient, string $type = 'To'): EMail
 	{
 		try
 		{
@@ -200,14 +208,17 @@ class EMail
 			default:
 				throw new \InvalidArgumentException('Unknown recipient type');
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Add an attachment.
 	 * @param string $fileName
 	 * @param bool $inline
+	 * @return EMail
 	 */
-	public function addAttachment(string $fileName, bool $inline = false)
+	public function addAttachment(string $fileName, bool $inline = false): EMail
 	{
 		if ($inline === true)
 		{
@@ -224,6 +235,8 @@ class EMail
 			'contentId'		=> md5(uniqid()),
 			'data'			=> null
 		);
+
+		return $this;
 	}
 
 	/**
@@ -231,8 +244,9 @@ class EMail
 	 * @param string $fileName
 	 * @param string $data
 	 * @param bool $inline
+	 * @return EMail
 	 */
-	public function addAttachmentData(string $fileName, string $data, bool $inline = false)
+	public function addAttachmentData(string $fileName, string $data, bool $inline = false): EMail
 	{
 		if ($inline === true)
 		{
@@ -249,15 +263,19 @@ class EMail
 			'contentId'		=> md5(uniqid()),
 			'data'			=> $data
 		);
+
+		return $this;
 	}
 
 	/**
 	 * Add an additional header.
 	 * @param string $header
+	 * @return EMail
 	 */
-	public function addHeader(string $header)
+	public function addHeader(string $header): EMail
 	{
 		$this->extraHeaders[] = $header;
+		return $this;
 	}
 
 	/**
