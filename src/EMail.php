@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 2.1.0
+ * @version 3.0.0
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -312,15 +312,15 @@ class EMail
 	 * @return string
 	 * @throws \InvalidArgumentException
 	 */
-	private function encodeContent(string $content, string $overrideEncoding = null): string
+	private function encodeContent(string $content, ?string $overrideEncoding = null): string
 	{
 		if (!is_null($overrideEncoding))
 		{
-			$contentEncoding= $overrideEncoding;
+			$contentEncoding = $overrideEncoding;
 		}
 		else
 		{
-			$contentEncoding= $this->encoding;
+			$contentEncoding = $this->encoding;
 		}
 
 		switch ($contentEncoding)
