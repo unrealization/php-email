@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.0.0
+ * @version 3.0.1
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -93,39 +93,17 @@ class EMail
 	 */
 	public function __construct(string $from, string $subject, string $replyTo = '', string $notificationTo = '', string $userAgent = 'PHP/unrealization/eMail')
 	{
-		try
-		{
-			$this->from = $this->validateAddress($from);
-		}
-		catch (\Exception $e)
-		{
-			throw $e;
-		}
-
+		$this->from = $this->validateAddress($from);
 		$this->subject = $subject;
 
 		if (!empty($replyTo))
 		{
-			try
-			{
-				$this->replyTo = $this->validateAddress($replyTo);
-			}
-			catch (\Exception $e)
-			{
-				throw $e;
-			}
+			$this->replyTo = $this->validateAddress($replyTo);
 		}
 
 		if (!empty($notificationTo))
 		{
-			try
-			{
-				$this->notificationTo = $this->validateAddress($notificationTo);
-			}
-			catch (\Exception $e)
-			{
-				throw $e;
-			}
+			$this->notificationTo = $this->validateAddress($notificationTo);
 		}
 
 		$this->userAgent = $userAgent;
@@ -185,14 +163,7 @@ class EMail
 	 */
 	public function addRecipient(string $recipient, string $type = 'To'): EMail
 	{
-		try
-		{
-			$recipient = $this->validateAddress($recipient);
-		}
-		catch (\Exception $e)
-		{
-			throw $e;
-		}
+		$recipient = $this->validateAddress($recipient);
 
 		switch (strtoupper($type))
 		{
@@ -235,7 +206,6 @@ class EMail
 			'contentId'		=> md5(uniqid()),
 			'data'			=> null
 		);
-
 		return $this;
 	}
 
@@ -263,7 +233,6 @@ class EMail
 			'contentId'		=> md5(uniqid()),
 			'data'			=> $data
 		);
-
 		return $this;
 	}
 
