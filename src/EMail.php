@@ -117,12 +117,12 @@ class EMail
 	 */
 	public function setEncoding(string $encoding): EMail
 	{
-		switch (strtoupper($encoding))
+		switch (mb_strtoupper($encoding))
 		{
 			case '8BIT':
 			case 'QUOTED-PRINTABLE':
 			case 'BASE64':
-				$this->encoding = strtolower($encoding);
+				$this->encoding = mb_strtolower($encoding);
 				break;
 			default:
 				throw new \InvalidArgumentException('Unknown encoding');
@@ -165,7 +165,7 @@ class EMail
 	{
 		$recipient = $this->validateAddress($recipient);
 
-		switch (strtoupper($type))
+		switch (mb_strtoupper($type))
 		{
 			case 'TO':
 				$this->to[] = $recipient;
@@ -254,8 +254,21 @@ class EMail
 	 */
 	private function parseHtml(string $htmlBody): string
 	{
-		$matches = array();
-		preg_match_all('@<img.*src=(\'|")(.*)(\'|").*>@U', $htmlBody, $matches);
+		$matches = MbRegEx::matchAll('<img.*src=(\'|")(.*)(\'|").*>', $htmlBody);
+
+		foreach ($matches as $match)
+		{
+			foreach ($this->attachedFiles as $attachment)
+			{
+				$fileName = mb_split('/', $attachment['fileName']);
+				$fileName = $fileName[count($fileName) - 1];
+
+				if ($fileName === $match[2])
+				{
+					$htmlBody = preg_replace('@<img(.*)src=(\'|")'.$matches[2][$x].'(\'|")(.*)>@U', '<img$1src=$2cid:'.$this->attachedFiles[$y]['contentId'].'$3$4>', $htmlBody);
+				}
+			}
+		}
 
 		for ($x = 0; $x < count($matches[2]); $x++)
 		{
