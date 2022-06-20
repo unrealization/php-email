@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.0.1
+ * @version 3.99.0
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -311,7 +311,7 @@ class EMail
 				return $content;
 				break;
 			case 'quoted-printable':
-				return imap_8bit($content);
+				return mb_convert_encoding($content, 'Quoted-Printable', '8bit');
 				break;
 			case 'base64':
 				return chunk_split(base64_encode($content));
@@ -474,18 +474,61 @@ class EMail
 	/**
 	 * Send the mail.
 	 * @return bool
+	 * @throws \Exception
 	 */
 	public function sendmail(): bool
 	{
 		$mail = $this->composeMail();
+		$lines = explode("\r\n", $mail);
+		$headers = array();
+		$to = null;
+		$subject = null;
 		$matches = array();
-		preg_match('@^To: (.*)'."\r\n".'@Um', $mail, $matches);
-		$to = $matches[1];
-		preg_match('@^Subject: (.*)'."\r\n".'@Um', $mail, $matches);
-		$subject = $matches[1];
-		$mail = preg_replace('@^To:.*'."\r\n".'@Um', '', $mail);
-		$mail = preg_replace('@^Subject:.*'."\r\n".'@Um', '', $mail);
-		return mail($to, $subject, '', $mail);
+
+		while (!empty($lines))
+		{
+			$line = $lines[0];
+			array_splice($lines, 0, 1);
+
+			if (empty($line))
+			{
+				break;
+			}
+
+			if (preg_match('@(To|Subject): (.*)$', $line, $matches))
+			{
+				switch ($matches[1])
+				{
+					case 'To':
+						$to = $matches[2];
+						continue 2;
+						break;
+					case 'Subject':
+						$subject = $matches[2];
+						continue 2;
+						break;
+					default:
+						throw new \Exception('I do not know how to deal with '.$matches[1]);
+						break;
+				}
+			}
+
+			$headers[] = $line;
+		}
+
+		$headers = implode("\r\n", $headers);
+		$content = implode("\r\n", $lines);
+
+		if (is_null($to))
+		{
+			throw new \Exception('No recipient found.');
+		}
+
+		if (is_null($subject))
+		{
+			throw new \Exception('No subject found.');
+		}
+
+		return mail($to, $subject, $content, $headers);
 	}
 }
-?>

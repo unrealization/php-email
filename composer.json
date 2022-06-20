@@ -12,6 +12,6 @@
 	"license" : "LGPL-2.1",
 	"require" : {
 		"php" : ">=7.1",
-		"ext-imap" : "*"
+		"ext-mbstring" : "*"
 	}
 }
