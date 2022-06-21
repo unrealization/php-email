@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.1
+ * @version 3.99.2
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -255,6 +255,11 @@ class EMail
 	private function parseHtml(string $htmlBody): string
 	{
 		$matches = MbRegEx::matchAll('<img.*src=(\'|")(.*)(\'|").*>', $htmlBody);
+
+		if (empty($matches))
+		{
+			return $htmlBody;
+		}
 
 		foreach ($matches as $match)
 		{
