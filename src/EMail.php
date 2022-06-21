@@ -12,7 +12,7 @@ namespace unrealization\PHPClassCollection;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.2
+ * @version 3.99.3
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -270,21 +270,7 @@ class EMail
 
 				if ($fileName === $match[2])
 				{
-					$htmlBody = preg_replace('@<img(.*)src=(\'|")'.$matches[2][$x].'(\'|")(.*)>@U', '<img$1src=$2cid:'.$this->attachedFiles[$y]['contentId'].'$3$4>', $htmlBody);
-				}
-			}
-		}
-
-		for ($x = 0; $x < count($matches[2]); $x++)
-		{
-			for ($y = 0; $y < count($this->attachedFiles); $y++)
-			{
-				$fileName = explode('/', $this->attachedFiles[$y]['fileName']);
-				$fileName = $fileName[count($fileName) - 1];
-
-				if ($fileName == $matches[2][$x])
-				{
-					$htmlBody = preg_replace('@<img(.*)src=(\'|")'.$matches[2][$x].'(\'|")(.*)>@U', '<img$1src=$2cid:'.$this->attachedFiles[$y]['contentId'].'$3$4>', $htmlBody);
+					$htmlBody = preg_replace('@<img(.*)src=(\'|")'.$match[2].'(\'|")(.*)>@U', '<img$1src=$2cid:'.$attachment['contentId'].'$3$4>', $htmlBody);
 				}
 			}
 		}
