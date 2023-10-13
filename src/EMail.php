@@ -6,13 +6,13 @@ declare(strict_types=1);
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
  */
-namespace unrealization\PHPClassCollection;
+namespace unrealization;
 /**
  * @package PHPClassCollection
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.3
+ * @version 3.99.4
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail

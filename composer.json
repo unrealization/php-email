@@ -1,10 +1,10 @@
 {
 	"autoload" : {
 		"psr-4" : {
-			"unrealization\\PHPClassCollection\\" : "src"
+			"unrealization\\" : "src"
 		},
 		"psr-0" : {
-			"unrealization\\PHPClassCollection\\" : "src"
+			"unrealization\\" : "src"
 		}
 	},
 	"name" : "unrealization/php-email",
@@ -13,6 +13,11 @@
 	"require" : {
 		"php" : ">=7.1",
 		"ext-mbstring" : "*",
-		"unrealization/php-mbregex" : "^1.0"
+		"unrealization/php-mbregex" : "^2.0"
+	},
+	"scripts" : {
+		"tests" : "XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors --testdox --coverage-text --log-junit ./unittest.xml tests",
+		"coverage" : "XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors --testdox --coverage-html ./coverage tests",
+		"profile" : "XDEBUG_MODE=coverage,profile ./vendor/bin/phpunit --colors --testdox --coverage-text --log-junit ./unittest.xml tests"
 	}
 }
