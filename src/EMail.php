@@ -12,7 +12,7 @@ namespace unrealization;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.4
+ * @version 3.99.5
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -107,6 +107,15 @@ class EMail
 		}
 
 		$this->userAgent = $userAgent;
+	}
+
+	/**
+	 * Output the email as a string.
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->composeMail();
 	}
 
 	/**
