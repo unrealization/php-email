@@ -12,7 +12,7 @@ namespace unrealization;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.5
+ * @version 3.99.6
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -91,21 +91,10 @@ class EMail
 	 * @param string $notificationTo
 	 * @param string $userAgent
 	 */
-	public function __construct(string $from, string $subject, string $replyTo = '', string $notificationTo = '', string $userAgent = 'PHP/unrealization/eMail')
+	public function __construct(string $from, string $subject, string $userAgent = 'PHP/unrealization/eMail')
 	{
 		$this->from = $this->validateAddress($from);
 		$this->subject = $subject;
-
-		if (!empty($replyTo))
-		{
-			$this->replyTo = $this->validateAddress($replyTo);
-		}
-
-		if (!empty($notificationTo))
-		{
-			$this->notificationTo = $this->validateAddress($notificationTo);
-		}
-
 		$this->userAgent = $userAgent;
 	}
 
@@ -254,6 +243,37 @@ class EMail
 	{
 		$this->extraHeaders[] = $header;
 		return $this;
+	}
+
+	/**
+	 * Set the reply-to address.
+	 * @param string $replyTo
+	 * @return EMail
+	 */
+	public function setReplyTo(?string $replyTo = null): EMail
+	{
+		if ((is_null($replyTo)) || (empty($replyTo)))
+		{
+			$this->replyTo = null;
+		}
+
+		$this->replyTo = $this->validateAddress($replyTo);
+		return $this;
+	}
+
+	/**
+	 * Set the notification-to address.
+	 * @param string $notificationTo
+	 * @return EMail
+	 */
+	public function setNotificationTo(?string $notificationTo = null): EMail
+	{
+		if ((is_null($notificationTo)) || (empty($notificationTo)))
+		{
+			$this->notificationTo = null;
+		}
+
+		$this->notificationTo = $this->validateAddress($notificationTo);
 	}
 
 	/**
