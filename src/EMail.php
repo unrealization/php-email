@@ -12,7 +12,7 @@ namespace unrealization;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.7
+ * @version 3.99.8
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -255,6 +255,7 @@ class EMail
 		if ((is_null($replyTo)) || (empty($replyTo)))
 		{
 			$this->replyTo = null;
+			return $this;
 		}
 
 		$this->replyTo = $this->validateAddress($replyTo);
@@ -271,6 +272,7 @@ class EMail
 		if ((is_null($notificationTo)) || (empty($notificationTo)))
 		{
 			$this->notificationTo = null;
+			return $this;
 		}
 
 		$this->notificationTo = $this->validateAddress($notificationTo);
