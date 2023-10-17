@@ -12,7 +12,7 @@ namespace unrealization;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.6
+ * @version 3.99.7
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -274,6 +274,7 @@ class EMail
 		}
 
 		$this->notificationTo = $this->validateAddress($notificationTo);
+		return $this;
 	}
 
 	/**
