@@ -12,7 +12,7 @@ namespace unrealization;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 3.99.8
+ * @version 3.99.9
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class EMail
@@ -189,22 +189,7 @@ class EMail
 	 */
 	public function addAttachment(string $fileName, bool $inline = false): EMail
 	{
-		if ($inline === true)
-		{
-			$disposition = 'inline';
-		}
-		else
-		{
-			$disposition = 'attachment';
-		}
-
-		$this->attachedFiles[] = array(
-			'fileName'		=> $fileName,
-			'disposition'	=> $disposition,
-			'contentId'		=> md5(uniqid()),
-			'data'			=> null
-		);
-		return $this;
+		return $this->addAttachmentData($fileName, null, $inline);
 	}
 
 	/**
@@ -214,7 +199,7 @@ class EMail
 	 * @param bool $inline
 	 * @return EMail
 	 */
-	public function addAttachmentData(string $fileName, string $data, bool $inline = false): EMail
+	public function addAttachmentData(string $fileName, ?string $data = null, bool $inline = false): EMail
 	{
 		if ($inline === true)
 		{
@@ -400,7 +385,7 @@ class EMail
 
 		if (count($this->attachedFiles) > 0)
 		{
-			$boundary='----'.md5(uniqid());
+			$boundary = '----'.md5(uniqid());
 			$mail .= 'Content-Type: multipart/mixed;'."\r\n\t".'boundary="'.$boundary.'"'."\r\n";
 		}
 
@@ -485,7 +470,7 @@ class EMail
 				$mail .= 'Content-Description: '.$fileName."\r\n";
 				$mail .= 'Content-ID: <'.$this->attachedFiles[$x]['contentId'].'>'."\r\n";
 				$mail .= 'Content-Disposition: '.$this->attachedFiles[$x]['disposition'].';'."\r\n\t".'filename="'.$fileName.'"'."\r\n\r\n";
-				$mail .= $this->encodeContent($this->attachedFiles[$x]['data'],'base64');
+				$mail .= $this->encodeContent($this->attachedFiles[$x]['data'], 'base64');
 			}
 
 			$mail .= "\r\n\r\n".'--'.$boundary.'--';
