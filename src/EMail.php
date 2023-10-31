@@ -12,76 +12,76 @@ namespace unrealization;
  * @subpackage EMail
  * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 4.0.0
+ * @version 5.0.0
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
-class EMail
+class EMail implements \Stringable
 {
 	/**
 	 * The sender of the mail.
 	 * @var string
 	 */
-	private $from;
+	private string $from;
 	/**
 	 * The list of recipients.
 	 * @var array
 	 */
-	private $to = array();
+	private array $to = array();
 	/**
 	 * The list of cc-recipients.
 	 * @var array
 	 */
-	private $cc = array();
+	private array $cc = array();
 	/**
 	 * The list of bcc-recipients.
 	 * @var array
 	 */
-	private $bcc = array();
+	private array $bcc = array();
 	/**
 	 * The subject of the mail.
 	 * @var string
 	 */
-	private $subject;
+	private string $subject;
 	/**
 	 * The clear-text body of the mail.
 	 * @var string
 	 */
-	private $textBody;
+	private string $textBody;
 	/**
 	 * The HTML body of the mail.
 	 * @var string
 	 */
-	private $htmlBody;
+	private string $htmlBody;
 	/**
 	 * The reply-to address.
 	 * @var string
 	 */
-	private $replyTo = null;
+	private ?string $replyTo = null;
 	/**
 	 * The notification-address.
 	 * @var string
 	 */
-	private $notificationTo = null;
+	private ?string $notificationTo = null;
 	/**
 	 * The sending user-agent.
 	 * @var string
 	 */
-	private $userAgent;
+	private string $userAgent;
 	/**
 	 * The encoding of the content.
 	 * @var string
 	 */
-	private $encoding = 'quoted-printable';
+	private string $encoding = 'quoted-printable';
 	/**
 	 * The list of attached files.
 	 * @var array
 	 */
-	private $attachedFiles = array();
+	private array $attachedFiles = array();
 	/**
 	 * The list of additional headers.
 	 * @var string
 	 */
-	private $extraHeaders = array();
+	private array $extraHeaders = array();
 
 	/**
 	 * Constructor

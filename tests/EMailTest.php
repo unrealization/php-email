@@ -16,7 +16,7 @@ class EMailTest extends TestCase
 
 		$mail->addRecipient('test2@example.com');
 		$mail->setTextBody('Test Mail');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'
@@ -37,7 +37,7 @@ class EMailTest extends TestCase
 
 		$mail->addRecipient('test3@example.com', 'Cc');
 		$mail->addRecipient('test4@example.com', 'Bcc');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'
@@ -60,7 +60,7 @@ class EMailTest extends TestCase
 
 		$mail->setReplyTo('test5@example.com');
 		$mail->setNotificationTo('test6@example.com');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'Reply-To: <test5\@example\.com>\r\n'
@@ -86,7 +86,7 @@ class EMailTest extends TestCase
 		$mail->setReplyTo(null);
 		$mail->setNotificationTo(null);
 		$mail->setHtmlBody('Test Mail<br/>');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'
@@ -124,7 +124,7 @@ class EMailTest extends TestCase
 
 		$mail->addAttachmentData('test.jpg', 'abc', true);
 		$mail->setHtmlBody('<img src="test.jpg"/>');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'
@@ -186,7 +186,7 @@ class EMailTest extends TestCase
 		$mail->addRecipient('test2@example.com');
 		$mail->setTextBody('Test Mail');
 		$mail->addAttachment($testFile);
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'
@@ -232,7 +232,7 @@ class EMailTest extends TestCase
 		$mail->setTextBody('Test Mail');
 		$mail->setEncoding('8bit');
 		$mail->addHeader('X-Test-Header: testValue');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'
@@ -253,7 +253,7 @@ class EMailTest extends TestCase
 		);
 
 		$mail->setEncoding('quoted-printable');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'
@@ -274,7 +274,7 @@ class EMailTest extends TestCase
 		);
 
 		$mail->setEncoding('base64');
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'@^'
 			.'From: <test\@example\.com>\r\n'
 			.'To: <test2\@example\.com>\r\n'

@@ -11,12 +11,12 @@
 	"type" : "library",
 	"license" : "LGPL-2.1",
 	"require" : {
-		"php" : ">=7.1",
+		"php" : ">=8.0",
 		"ext-mbstring" : "*",
-		"unrealization/php-mbregex" : "^2.0"
+		"unrealization/php-mbregex" : "^3.0"
 	},
 	"require-dev" : {
-		"phpunit/phpunit" : "^7.5"
+		"phpunit/phpunit" : "^9.6"
 	},
 	"scripts" : {
 		"tests" : "XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors --testdox --coverage-text --log-junit ./unittest.xml tests",
