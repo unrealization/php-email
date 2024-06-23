@@ -1,10 +1,9 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use unrealization\EMail;
-use unrealization\MbRegEx;
 
 /**
- * TarArchive test case.
+ * EMail test case.
  * @covers unrealization\EMail
  */
 class EMailTest extends TestCase
